@@ -17,15 +17,26 @@ type Props =
 
 export class TaskItem extends Component<Props>
 {
-  private execDelete(){}
+  private execDelete( index?: number )
+  {
+    if ( index === undefined )
+    {
+      // Remove task.
+      Store.removeTask( this.props.task.id );
+    } else
+    {
+      // Remove subtask.
+      Store.removeSubTask( this.props.task.id, index );
+    }
+  }
 
   private execEdit() { Store.gotoPage( 'edit', { edit: this.props.task.id } ); }
 
-  private renderTaskContent( name: string )
+  private renderTaskContent( name: string, index?: number )
   {
     return (
       <View>
-        <TouchableOpacity onPress={ () => { this.execDelete() } }>
+        <TouchableOpacity onPress={ () => { this.execDelete( index ) } }>
           <Text>○</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={ () => { this.execEdit() } }>
@@ -35,9 +46,9 @@ export class TaskItem extends Component<Props>
     );
   }
 
-  private renderSubtask( subtask: string )
+  private renderSubtask( subtask: string, index: number )
   {
-    return ( <View style={ [ styles.subtask, styles.taskview ] }>{ this.renderTaskContent( subtask ) }</View> );
+    return ( <View style={ [ styles.subtask, styles.taskview ] }>{ this.renderTaskContent( subtask, index ) }</View> );
   }
 
   private renderSubtasks( tasks?: string[] )
@@ -45,7 +56,7 @@ export class TaskItem extends Component<Props>
     if ( !tasks ) { return ''; }
     return (
       <View style={ styles.subtasks }>
-        { tasks.map( ( task ) => { return this.renderSubtask( task ); } ) }
+        { tasks.map( ( task, index ) => { return this.renderSubtask( task, index ); } ) }
       </View>
     );
   }

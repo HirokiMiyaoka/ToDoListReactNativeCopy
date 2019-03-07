@@ -7,7 +7,8 @@ export default class Top extends Component {
         return (React.createElement(View, { style: styles.container },
             React.createElement(Text, { style: styles.header }, "\u30DE\u30A4\u30BF\u30B9\u30AF"),
             React.createElement(TaskList, { tasks: [] }),
-            React.createElement(View, { style: styles.footer })));
+            React.createElement(View, { style: styles.footer },
+                React.createElement(Text, null, "test"))));
     }
 }
 const styles = StyleSheet.create({

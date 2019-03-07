@@ -1,6 +1,6 @@
 import React from 'react'
 import { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import { TaskData } from '../Component/TaskItem';
 import Store from '../Store';
 
@@ -28,6 +28,7 @@ export default class Edit extends Component<Props,State>
     return (
       <View style={ styles.container }>
         <Text>edit page</Text>
+        <Button title="back" onPress={ () => { Store.gotoPage(); } }></Button>
       </View>
     );
   }

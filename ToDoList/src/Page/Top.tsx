@@ -16,7 +16,7 @@ export default class Top extends Component<Props>
         <Text style={ styles.header }>マイタスク</Text>
         <TaskList tasks={ [] }></TaskList>
         <View style={ styles.footer }>
-
+          <Text>test</Text>
         </View>
       </View>
     );

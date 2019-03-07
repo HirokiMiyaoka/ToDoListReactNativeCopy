@@ -3,23 +3,32 @@ import { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Store from '../Store';
 export class TaskItem extends Component {
-    execDelete() { }
-    execEdit() { Store.gotoPage('edit'); }
-    renderTaskContent(name) {
+    execDelete(index) {
+        if (index === undefined) {
+            // Remove task.
+            Store.removeTask(this.props.task.id);
+        }
+        else {
+            // Remove subtask.
+            Store.removeSubTask(this.props.task.id, index);
+        }
+    }
+    execEdit() { Store.gotoPage('edit', { edit: this.props.task.id }); }
+    renderTaskContent(name, index) {
         return (React.createElement(View, null,
-            React.createElement(TouchableOpacity, { onPress: () => { this.execDelete(); } },
+            React.createElement(TouchableOpacity, { onPress: () => { this.execDelete(index); } },
                 React.createElement(Text, null, "\u25CB")),
             React.createElement(TouchableOpacity, { onPress: () => { this.execEdit(); } },
                 React.createElement(Text, null, name))));
     }
-    renderSubtask(subtask) {
-        return (React.createElement(View, { style: [styles.subtask, styles.taskview] }, this.renderTaskContent(subtask)));
+    renderSubtask(subtask, index) {
+        return (React.createElement(View, { style: [styles.subtask, styles.taskview] }, this.renderTaskContent(subtask, index)));
     }
     renderSubtasks(tasks) {
         if (!tasks) {
             return '';
         }
-        return (React.createElement(View, { style: styles.subtasks }, tasks.map((task) => { return this.renderSubtask(task); })));
+        return (React.createElement(View, { style: styles.subtasks }, tasks.map((task, index) => { return this.renderSubtask(task, index); })));
     }
     render() {
         return (React.createElement(View, { style: [styles.container, styles.taskview] },

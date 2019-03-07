@@ -9,9 +9,9 @@ export type Type =
 
 export default class Store
 {
-  private static ss: ( state: Type ) => void;
+  private static ss: ( state: Type, cb: () => void ) => void;
   private static gs: () => Type;
-  public static init( setState: ( state: Type ) => void, getState: () => Type )
+  public static init( setState: ( state: Type, cb: () => void ) => void, getState: () => Type )
   {
     this.ss = setState;
     this.gs = getState;
@@ -23,30 +23,44 @@ export default class Store
       tasks: [],
     };
 
+    // Debug:
+    state.tasks.push( { id: 1, title: 'test1' } );
+    state.tasks.push( { id: 2, title: 'test2' } );
+
     return state;
   }
 
-  public static setState( state: any ) { this.ss( state ); }
-
-  public static gotoPage( page: string, args: { [ keys: string ]: any } = {} )
+  public static setState( state: any ): Promise<void>
   {
-    args.page = page;
-    this.setState( args );
+    return new Promise( ( resolve ) =>
+    {
+      this.ss( state, () => { resolve(); } );
+    } );
   }
 
-  public static searchTask( id: number ): TaskData|null
+  public static gotoPage( page: string = '', args: { [ keys: string ]: any } = {} )
+  {
+    args.page = page;
+    return this.setState( args );
+  }
+
+  public static searchTask( id: number ): number
   {
     const tasks = this.gs().tasks;
 
-    for ( let task of tasks ) { if ( task.id ) { return task; } }
+    for ( let i = 0 ; i < tasks.length ; ++i )
+    {
+      if ( tasks[ i ].id ) { return i; }
+    }
 
-    return null;
+    return -1;
   }
 
   public static getTask( id: number )
   {
-    const task = this.searchTask( id );
-    if ( task ) { return task; }
+    const index = this.searchTask( id );
+
+    if ( 0 <= index ) { return this.gs().tasks[ index ]; }
 
     const etask: TaskData =
     {
@@ -55,5 +69,33 @@ export default class Store
     };
 
     return etask;
+  }
+
+  public static updateTask( id: number, data: TaskData )
+  {
+    const index = this.searchTask( id );
+    if ( index < 0 ) { return Promise.reject( new Error( 'No task.' ) ); }
+    const tasks = this.gs().tasks;
+    tasks[ index ] = data;
+    return this.setState( { tasks: tasks } );
+  }
+
+  public static removeTask( id: number )
+  {
+    const index = this.searchTask( id );
+    if ( index < 0 ) { return Promise.reject( new Error( 'No task.' ) ); }
+    const tasks = this.gs().tasks;
+    tasks.splice( index, 1 );
+    return this.setState( { tasks: tasks } );
+  }
+
+  public static removeSubTask( id: number, sindex: number )
+  {
+    const index = this.searchTask( id );
+    if ( index < 0 ) { return Promise.reject( new Error( 'No task.' ) ); }
+    const tasks = this.gs().tasks;
+    const subtasks = tasks[ index ].subtasks;
+    if ( subtasks ) { subtasks.splice( index, 1 ); }
+    return this.setState( { tasks: tasks } );
   }
 }

@@ -22,11 +22,11 @@ const instructions = Platform.select({
 export default class App extends Component {
     constructor(props) {
         super(props);
-        this.state = Store.default.init((state) => { this.setState(state); });
+        this.state = Store.default.init((state, cb) => { this.setState(state, cb); }, () => { return this.state; });
     }
     renderPage(page) {
         switch (page) {
-            case 'edit': return (React.createElement(Edit, null));
+            case 'edit': return (React.createElement(Edit, { edit: this.state.edit || 0 }));
             default: return (React.createElement(Top, null));
         }
     }

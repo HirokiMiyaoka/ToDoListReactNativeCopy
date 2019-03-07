@@ -32,7 +32,7 @@ export default class App extends Component<Props,Store.Type>
   {
     super( props );
     this.state = Store.default.init(
-      ( state ) => { this.setState( state ); },
+      ( state, cb ) => { this.setState( state, cb ); },
       () => { return this.state; }
     );
   }
