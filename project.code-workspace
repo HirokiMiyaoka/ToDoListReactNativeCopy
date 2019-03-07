@@ -3,5 +3,9 @@
 		{
 			"path": "ToDoList/src"
 		}
-	]
+	],
+	"settings": {
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2
+	}
 }
