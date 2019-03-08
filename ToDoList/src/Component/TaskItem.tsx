@@ -1,6 +1,8 @@
 import React from 'react'
 import { Component } from 'react';
+// Components
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+// Store
 import Store from '../Store';
 
 export interface TaskData

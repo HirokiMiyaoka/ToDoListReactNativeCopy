@@ -11,6 +11,7 @@
 import React from 'react'
 import { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
+// Store
 import * as Store from './Store';
 // Page
 import Top from './Page/Top';
@@ -31,7 +32,7 @@ export default class App extends Component<Props,Store.Type>
   constructor( props: any )
   {
     super( props );
-    this.state = Store.default.init(
+    this.state = Store.init(
       ( state, cb ) => { this.setState( state, cb ); },
       () => { return this.state; }
     );

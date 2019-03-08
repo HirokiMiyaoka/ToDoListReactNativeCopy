@@ -1,5 +1,6 @@
 import React from 'react'
 import { Component } from 'react';
+// Components
 import { StyleSheet, FlatList, View } from 'react-native';
 import { TaskItem, TaskData } from './TaskItem'
 

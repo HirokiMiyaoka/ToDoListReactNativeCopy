@@ -41,13 +41,29 @@ export default class Store {
         };
         return etask;
     }
-    static updateTask(id, data) {
-        const index = this.searchTask(id);
-        if (index < 0) {
-            return Promise.reject(new Error('No task.'));
-        }
+    static updateTask(data) {
+        const id = data.id;
         const tasks = this.gs().tasks;
-        tasks[index] = data;
+        if (id <= 0) {
+            // Add new task.
+            tasks.forEach((task) => {
+                if (data.id < task.id) {
+                    data.id = task.id + 1;
+                }
+            });
+            if (data.id <= 0) {
+                data.id = 1;
+            }
+            tasks.push(data);
+        }
+        else {
+            // Update task.
+            const index = this.searchTask(id);
+            if (index < 0) {
+                return Promise.reject(new Error('No task.'));
+            }
+            tasks[index] = data;
+        }
         return this.setState({ tasks: tasks });
     }
     static removeTask(id) {
