@@ -43,7 +43,7 @@ export default class App extends Component<Props,Store.Type>
     switch ( page )
     {
       case 'edit': return ( <Edit edit={ this.state.edit || 0 }></Edit> );
-      default: return ( <Top></Top> );
+      default: return ( <Top tasks={ this.state.tasks }></Top> );
     }
   }
 
