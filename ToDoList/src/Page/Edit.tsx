@@ -13,7 +13,7 @@ type Props =
 
 type State = TaskData &
 {
-
+  edit: boolean,
 };
 
 export default class Edit extends Component<Props,State>
@@ -22,14 +22,28 @@ export default class Edit extends Component<Props,State>
   {
     super( props );
     const task = Store.getTask( this.props.edit );
-    this.state = Object.assign( {}, task );
+    this.state = Object.assign( { edit: this.props.edit !== 0 }, task );
   }
 
-  private nowTask(): TaskData { return this.state; }
+  private nowTask(): TaskData
+  {
+    const task: TaskData =
+    {
+      id: this.state.id,
+      title: this.state.title,
+      subtasks: this.state.subtasks,
+    };
+    return task;
+  }
+
+  private checkUpdate()
+  {
+    return this.state.edit;
+  }
 
   private execBack()
   {
-    Store.updateTask( this.nowTask() ).then( () =>
+    ( this.checkUpdate() ? Store.updateTask( this.nowTask() ) : Promise.resolve() ).then( () =>
     {
       Store.gotoPage();
     } );

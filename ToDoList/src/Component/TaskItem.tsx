@@ -45,6 +45,7 @@ export class TaskItem extends Component<Props, State>
       this.setState( { del: true } );
       setTimeout( () =>
       {
+        this.setState( { del: false } );
         Store.removeTask( this.props.task.id );
       }, TaskItem.DELETE_TIME );
     } else
@@ -69,14 +70,13 @@ export class TaskItem extends Component<Props, State>
   private renderTaskContent( name: string, del: boolean, index?: number )
   {
     return (
-      <View>
-        <TouchableOpacity onPress={ () => { this.execDelete( index ) } }>
-          <Text>{ del ? '✔' : '○' }</Text>
+      <View style={ styles.taskline }>
+        <TouchableOpacity onPress={ () => { this.execDelete( index ) } } style={ styles.checkbutton }>
+          <Text style={ styles.checktext }>{ del ? '✔' : '○' }</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={ () => { this.execEdit() } }>
-          <Text>{ name }</Text>
+          <Text style={ styles.text }>{ name }</Text>
         </TouchableOpacity>
-        { this.renderSubtasks( this.props.task.subtasks ) }
       </View>
     );
   }
@@ -103,6 +103,7 @@ export class TaskItem extends Component<Props, State>
     return (
       <View style={ [ styles.container, styles.taskview ] }>
 	  	  { this.renderTaskContent( this.props.task.title, this.state.del ) }
+        { this.renderSubtasks( this.props.task.subtasks ) }
       </View>
     );
   }
@@ -112,13 +113,34 @@ const styles = StyleSheet.create(
 {
   container:
   {
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    height: 40,
+  },
+  text:
+  {
+    fontSize: 20,
   },
   subtasks:
   {
-    paddingLeft: '1em',
+    paddingLeft: 30,
   },
-  subtask:
+  subtask: {},
+  taskline:
   {
+    paddingLeft: 30,
+  },
+  checkbutton:
+  {
+    position: 'absolute',
+    top: -25,
+    left: -10,
+  },
+  checktext:
+  {
+    fontSize: 50,
   },
   taskview:
   {

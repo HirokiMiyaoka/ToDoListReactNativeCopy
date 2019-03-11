@@ -18,6 +18,7 @@ export class TaskItem extends Component {
             // Remove task.
             this.setState({ del: true });
             setTimeout(() => {
+                this.setState({ del: false });
                 Store.removeTask(this.props.task.id);
             }, TaskItem.DELETE_TIME);
         }
@@ -39,12 +40,11 @@ export class TaskItem extends Component {
     }
     execEdit() { Store.gotoPage('edit', { edit: this.props.task.id }); }
     renderTaskContent(name, del, index) {
-        return (React.createElement(View, null,
-            React.createElement(TouchableOpacity, { onPress: () => { this.execDelete(index); } },
-                React.createElement(Text, null, del ? '✔' : '○')),
+        return (React.createElement(View, { style: styles.taskline },
+            React.createElement(TouchableOpacity, { onPress: () => { this.execDelete(index); }, style: styles.checkbutton },
+                React.createElement(Text, { style: styles.checktext }, del ? '✔' : '○')),
             React.createElement(TouchableOpacity, { onPress: () => { this.execEdit(); } },
-                React.createElement(Text, null, name)),
-            this.renderSubtasks(this.props.task.subtasks)));
+                React.createElement(Text, { style: styles.text }, name))));
     }
     renderSubtask(subtask, index) {
         return (React.createElement(View, { style: [styles.subtask, styles.taskview] }, this.renderTaskContent(subtask, 0 <= this.state.dels.indexOf(index), index)));
@@ -56,16 +56,38 @@ export class TaskItem extends Component {
         return (React.createElement(View, { style: styles.subtasks }, tasks.map((task, index) => { return this.renderSubtask(task, index); })));
     }
     render() {
-        return (React.createElement(View, { style: [styles.container, styles.taskview] }, this.renderTaskContent(this.props.task.title, this.state.del)));
+        return (React.createElement(View, { style: [styles.container, styles.taskview] },
+            this.renderTaskContent(this.props.task.title, this.state.del),
+            this.renderSubtasks(this.props.task.subtasks)));
     }
 }
 TaskItem.DELETE_TIME = 1000;
 const styles = StyleSheet.create({
-    container: {},
+    container: {
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 5,
+        paddingBottom: 5,
+        height: 40,
+    },
+    text: {
+        fontSize: 20,
+    },
     subtasks: {
-        paddingLeft: '1em',
+        paddingLeft: 30,
     },
     subtask: {},
+    taskline: {
+        paddingLeft: 30,
+    },
+    checkbutton: {
+        position: 'absolute',
+        top: -25,
+        left: -10,
+    },
+    checktext: {
+        fontSize: 50,
+    },
     taskview: {
         borderBottomWidth: 1,
         borderBottomColor: 'gray',

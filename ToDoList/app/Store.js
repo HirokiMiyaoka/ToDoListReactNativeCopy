@@ -13,6 +13,7 @@ export default class Store {
         // Debug:
         state.tasks.push({ id: 1, title: 'test1' });
         state.tasks.push({ id: 2, title: 'test2' });
+        state.tasks.push({ id: 3, title: 'test3' });
         return state;
     }
     static setState(state) {
@@ -27,7 +28,7 @@ export default class Store {
     static searchTask(id) {
         const tasks = this.gs().tasks;
         for (let i = 0; i < tasks.length; ++i) {
-            if (tasks[i].id) {
+            if (tasks[i].id === id) {
                 return i;
             }
         }

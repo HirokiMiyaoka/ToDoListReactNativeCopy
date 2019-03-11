@@ -31,6 +31,7 @@ export default class Store
     // Debug:
     state.tasks.push( { id: 1, title: 'test1' } );
     state.tasks.push( { id: 2, title: 'test2' } );
+    state.tasks.push( { id: 3, title: 'test3' } );
 
     return state;
   }
@@ -55,7 +56,7 @@ export default class Store
 
     for ( let i = 0 ; i < tasks.length ; ++i )
     {
-      if ( tasks[ i ].id ) { return i; }
+      if ( tasks[ i ].id === id ) { return i; }
     }
 
     return -1;
