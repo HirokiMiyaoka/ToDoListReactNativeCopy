@@ -20,7 +20,8 @@ export default class TaskList extends Component<Props>
         renderItem={ ( task ) =>
         {
           return <TaskItem task={ task.item }></TaskItem>;
-        } }>
+        } }
+        keyExtractor={ ( item: TaskData, index: number ) => { return item.id.toString(); } }>
       </FlatList>
     );
   }

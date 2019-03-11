@@ -76,6 +76,7 @@ export class TaskItem extends Component<Props, State>
         <TouchableOpacity onPress={ () => { this.execEdit() } }>
           <Text>{ name }</Text>
         </TouchableOpacity>
+        { this.renderSubtasks( this.props.task.subtasks ) }
       </View>
     );
   }
@@ -89,7 +90,7 @@ export class TaskItem extends Component<Props, State>
 
   private renderSubtasks( tasks?: string[] )
   {
-    if ( !tasks ) { return ''; }
+    if ( !tasks ) { return <View></View>; }
     return (
       <View style={ styles.subtasks }>
         { tasks.map( ( task, index ) => { return this.renderSubtask( task, index ); } ) }
@@ -102,7 +103,6 @@ export class TaskItem extends Component<Props, State>
     return (
       <View style={ [ styles.container, styles.taskview ] }>
 	  	  { this.renderTaskContent( this.props.task.title, this.state.del ) }
-        { this.renderSubtasks( this.props.task.subtasks ) }
       </View>
     );
   }

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+// Components
+import { StyleSheet, View, Button, TextInput } from 'react-native';
+// Store
 import Store from '../Store';
 export default class Edit extends Component {
     constructor(props) {
@@ -21,13 +23,19 @@ export default class Edit extends Component {
     }
     render() {
         return (React.createElement(View, { style: styles.container },
-            React.createElement(Text, null, "edit page"),
-            React.createElement(Button, { title: "back", onPress: () => { this.execBack(); } }),
-            React.createElement(Button, { title: "delete", onPress: () => { this.execDelete(); } })));
+            React.createElement(View, { style: styles.header },
+                React.createElement(Button, { title: "back", onPress: () => { this.execBack(); } }),
+                React.createElement(Button, { title: "delete", onPress: () => { this.execDelete(); } })),
+            React.createElement(View, null,
+                React.createElement(TextInput, { style: styles.input, placeholder: "Input title." }))));
     }
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    header: {},
+    input: {
+        height: 20,
     },
 });

@@ -10,6 +10,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
+// Store
 import * as Store from './Store';
 // Page
 import Top from './Page/Top';
@@ -22,12 +23,12 @@ const instructions = Platform.select({
 export default class App extends Component {
     constructor(props) {
         super(props);
-        this.state = Store.default.init((state, cb) => { this.setState(state, cb); }, () => { return this.state; });
+        this.state = Store.init((state, cb) => { this.setState(state, cb); }, () => { return this.state; });
     }
     renderPage(page) {
         switch (page) {
             case 'edit': return (React.createElement(Edit, { edit: this.state.edit || 0 }));
-            default: return (React.createElement(Top, null));
+            default: return (React.createElement(Top, { tasks: this.state.tasks }));
         }
     }
     render() {

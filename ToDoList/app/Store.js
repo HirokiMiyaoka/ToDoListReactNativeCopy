@@ -1,3 +1,6 @@
+export function init(setState, getState) {
+    return Store.init(setState, getState);
+}
 export default class Store {
     static init(setState, getState) {
         this.ss = setState;
@@ -47,7 +50,7 @@ export default class Store {
         if (id <= 0) {
             // Add new task.
             tasks.forEach((task) => {
-                if (data.id < task.id) {
+                if (data.id <= task.id) {
                     data.id = task.id + 1;
                 }
             });
@@ -83,7 +86,7 @@ export default class Store {
         const tasks = this.gs().tasks;
         const subtasks = tasks[index].subtasks;
         if (subtasks) {
-            subtasks.splice(index, 1);
+            subtasks.splice(sindex, 1);
         }
         return this.setState({ tasks: tasks });
     }
