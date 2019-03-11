@@ -12,11 +12,28 @@ type Props =
   tasks: TaskData[],
 };
 
-export default class Top extends Component<Props>
+type State =
 {
-  execNewTask()
+  open: boolean,
+}
+
+export default class Top extends Component<Props,State>
+{
+  constructor( props: any )
   {
-    Store.gotoPage( 'edit', { edit: 0 } );
+    super( props );
+    this.state = { open: false };
+  }
+
+  private execNewTask()
+  {
+    //Store.gotoPage( 'edit', { edit: 0 } );
+    this.setState( { open: true } );
+  }
+
+  private execCancelNewTask()
+  {
+    this.setState( { open: false } );
   }
 
   render()
@@ -32,6 +49,11 @@ export default class Top extends Component<Props>
             <Text style={ styles.buttontext }>+新しいタスクを追加</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={ () => { this.execCancelNewTask() } } style={ [ styles.black, this.state.open ? { top: 0 } : { height: 0 } ] }>
+          <View style={ styles.newtask }>
+            <Text>new task</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -83,5 +105,23 @@ const styles = StyleSheet.create(
   buttontext:
   {
     color: '#ffffff',
+  },
+  black:
+  {
+    position: 'absolute',
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    overflow: 'hidden',
+    display: 'flex',
+  },
+  newtask:
+  {
+    backgroundColor: '#ffffff',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 } );
