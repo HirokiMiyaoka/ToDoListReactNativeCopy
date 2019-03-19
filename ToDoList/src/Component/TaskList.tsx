@@ -28,7 +28,7 @@ export default class TaskList extends Component<Props>
         {
           return <TaskItem task={ task.item }></TaskItem>;
         } }
-        keyExtractor={ ( item: TaskData, index: number ) => { return item.id.toString(); } }
+        keyExtractor={ ( item, index ) => { return item.id.toString(); } }
         ListEmptyComponent={ this.renderEmpty() }
       />
     );

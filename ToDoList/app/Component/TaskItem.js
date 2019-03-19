@@ -47,7 +47,7 @@ export class TaskItem extends Component {
                 React.createElement(Text, { style: styles.text }, name))));
     }
     renderSubtask(subtask, index) {
-        return (React.createElement(View, { style: [styles.subtask, styles.taskview] }, this.renderTaskContent(subtask, 0 <= this.state.dels.indexOf(index), index)));
+        return (React.createElement(View, { style: [styles.subtask, styles.taskview], key: index.toString() }, this.renderTaskContent(subtask, 0 <= this.state.dels.indexOf(index), index)));
     }
     renderSubtasks(tasks) {
         if (!tasks) {
@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: 5,
         paddingBottom: 5,
-        height: 40,
     },
     text: {
         fontSize: 20,

@@ -83,7 +83,7 @@ export class TaskItem extends Component<Props, State>
 
   private renderSubtask( subtask: string, index: number )
   {
-    return ( <View style={ [ styles.subtask, styles.taskview ] }>
+    return ( <View style={ [ styles.subtask, styles.taskview ] } key={ index.toString() }>
       { this.renderTaskContent( subtask, 0 <= this.state.dels.indexOf( index ), index ) }
     </View> );
   }
@@ -117,7 +117,7 @@ const styles = StyleSheet.create(
     paddingRight: 10,
     paddingTop: 5,
     paddingBottom: 5,
-    height: 40,
+    //height: 40,
   },
   text:
   {

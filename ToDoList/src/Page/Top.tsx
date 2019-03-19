@@ -45,6 +45,8 @@ export default class Top extends Component<Props,State>
           <TaskList tasks={ this.props.tasks }></TaskList>
         </View>
         <View style={ styles.footer }>
+        </View>
+        <View style={ styles.createarea }>
           <TouchableOpacity onPress={ () => { this.execNewTask(); } } style={ styles.createbutton } >
             <Text style={ styles.buttontext }>+新しいタスクを追加</Text>
           </TouchableOpacity>
@@ -92,12 +94,21 @@ const styles = StyleSheet.create(
     borderTopColor: 'gray',
     alignItems: 'center',
   },
+  createarea:
+  {
+    position: 'absolute',
+    height: 40,
+    left: 0,
+    right: 0,
+    bottom: 20,
+    alignItems: 'center',
+  },
   createbutton:
   {
     position: 'absolute',
     padding: 10,
     borderRadius: 20,
-    top: -20,
+    top: 0,
     width: 200,
     backgroundColor: '#4285f4',
     alignItems: 'center',
