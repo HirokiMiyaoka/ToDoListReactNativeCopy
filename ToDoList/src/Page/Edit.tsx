@@ -77,6 +77,21 @@ export default class Edit extends Component<Props,State>
     this.setState( { subtasks: list } );
   }
 
+  public render()
+  {
+    return (
+      <View style={ styles.container }>
+        { this.renderHeader() }
+        { this.renderMainTask() }
+        <View style={ styles.subtasks }>
+          <View style={ styles.subtaskicon }><Text>↳</Text></View>
+          { this.renderSubtasks( this.state.subtasks || [] ) }
+          { this.renderAddSubtask() }
+        </View>
+      </View>
+    );
+  }
+
   public renderHeader()
   {
     return (
@@ -130,21 +145,6 @@ export default class Edit extends Component<Props,State>
         keyExtractor={ ( item, index ) => { return index.toString(); } }
         ListEmptyComponent={ () => { return ( <View style={ { height: 0 } }></View> ); } }
       />
-    );
-  }
-
-  public render()
-  {
-    return (
-      <View style={ styles.container }>
-        { this.renderHeader() }
-        { this.renderMainTask() }
-        <View style={ styles.subtasks }>
-          <View style={ styles.subtaskicon }><Text>↳</Text></View>
-          { this.renderSubtasks( this.state.subtasks || [] ) }
-          { this.renderAddSubtask() }
-        </View>
-      </View>
     );
   }
 }

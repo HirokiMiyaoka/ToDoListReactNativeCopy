@@ -15,6 +15,7 @@ export interface TaskData
 type Props =
 {
   task: TaskData,
+  complete: boolean,
 };
 
 type State =

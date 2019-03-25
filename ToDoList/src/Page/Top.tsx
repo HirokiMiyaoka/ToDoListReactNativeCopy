@@ -10,10 +10,12 @@ import Store from '../Store';
 type Props =
 {
   tasks: TaskData[],
+  complete: TaskData[],
 };
 
 type State =
 {
+  create: boolean,
   open: boolean,
 }
 
@@ -22,18 +24,18 @@ export default class Top extends Component<Props,State>
   constructor( props: any )
   {
     super( props );
-    this.state = { open: false };
+    this.state = { create: false, open: false };
   }
 
   private execNewTask()
   {
     //Store.gotoPage( 'edit', { edit: 0 } );
-    this.setState( { open: true } );
+    this.setState( { create: true } );
   }
 
   private execCancelNewTask()
   {
-    this.setState( { open: false } );
+    this.setState( { create: false } );
   }
 
   render()
@@ -42,7 +44,10 @@ export default class Top extends Component<Props,State>
       <View style={ styles.container }>
         <Text style={ styles.header }>マイタスク</Text>
         <View style={ styles.list }>
-          <TaskList tasks={ this.props.tasks }></TaskList>
+          <View>
+            <TaskList tasks={ this.props.tasks }></TaskList>
+          </View>
+          { this.renderComplete( this.props.complete ) }
         </View>
         <View style={ styles.footer }>
         </View>
@@ -51,11 +56,22 @@ export default class Top extends Component<Props,State>
             <Text style={ styles.buttontext }>+新しいタスクを追加</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={ () => { this.execCancelNewTask() } } style={ [ styles.black, this.state.open ? { top: 0 } : { height: 0 } ] }>
+        <TouchableOpacity onPress={ () => { this.execCancelNewTask() } } style={ [ styles.black, this.state.create ? { top: 0 } : { height: 0 } ] }>
           <View style={ styles.newtask }>
             <Text>new task</Text>
           </View>
         </TouchableOpacity>
+      </View>
+    );
+  }
+
+  private renderComplete( list: TaskData[] )
+  {
+    if ( list.length <= 0 ) { return (<View></View>); }
+    return (
+      <View>
+        <TouchableOpacity style={ styles.completeheader } onPress={ () => { this.setState( { open: !this.state.open } ); } }><Text>完了したタスク({ list.length }件)</Text></TouchableOpacity>
+        { this.state.open ? <TaskList tasks={ list } complete={ true }></TaskList> : <View></View> }
       </View>
     );
   }
@@ -132,6 +148,11 @@ const styles = StyleSheet.create(
     backgroundColor: '#ffffff',
     position: 'absolute',
     bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  completeheader:
+  {
     left: 0,
     right: 0,
   },

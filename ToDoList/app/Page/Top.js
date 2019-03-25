@@ -6,27 +6,41 @@ import TaskList from '../Component/TaskList';
 export default class Top extends Component {
     constructor(props) {
         super(props);
-        this.state = { open: false };
+        this.state = { create: false, open: false };
     }
     execNewTask() {
         //Store.gotoPage( 'edit', { edit: 0 } );
-        this.setState({ open: true });
+        this.setState({ create: true });
     }
     execCancelNewTask() {
-        this.setState({ open: false });
+        this.setState({ create: false });
     }
     render() {
         return (React.createElement(View, { style: styles.container },
             React.createElement(Text, { style: styles.header }, "\u30DE\u30A4\u30BF\u30B9\u30AF"),
             React.createElement(View, { style: styles.list },
-                React.createElement(TaskList, { tasks: this.props.tasks })),
+                React.createElement(View, null,
+                    React.createElement(TaskList, { tasks: this.props.tasks })),
+                this.renderComplete(this.props.complete)),
             React.createElement(View, { style: styles.footer }),
             React.createElement(View, { style: styles.createarea },
                 React.createElement(TouchableOpacity, { onPress: () => { this.execNewTask(); }, style: styles.createbutton },
                     React.createElement(Text, { style: styles.buttontext }, "+\u65B0\u3057\u3044\u30BF\u30B9\u30AF\u3092\u8FFD\u52A0"))),
-            React.createElement(TouchableOpacity, { onPress: () => { this.execCancelNewTask(); }, style: [styles.black, this.state.open ? { top: 0 } : { height: 0 }] },
+            React.createElement(TouchableOpacity, { onPress: () => { this.execCancelNewTask(); }, style: [styles.black, this.state.create ? { top: 0 } : { height: 0 }] },
                 React.createElement(View, { style: styles.newtask },
                     React.createElement(Text, null, "new task")))));
+    }
+    renderComplete(list) {
+        if (list.length <= 0) {
+            return (React.createElement(View, null));
+        }
+        return (React.createElement(View, null,
+            React.createElement(TouchableOpacity, { style: styles.completeheader, onPress: () => { this.setState({ open: !this.state.open }); } },
+                React.createElement(Text, null,
+                    "\u5B8C\u4E86\u3057\u305F\u30BF\u30B9\u30AF(",
+                    list.length,
+                    "\u4EF6)")),
+            this.state.open ? React.createElement(TaskList, { tasks: list }) : React.createElement(View, null)));
     }
 }
 const styles = StyleSheet.create({
@@ -90,6 +104,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         position: 'absolute',
         bottom: 0,
+        left: 0,
+        right: 0,
+    },
+    completeheader: {
         left: 0,
         right: 0,
     },

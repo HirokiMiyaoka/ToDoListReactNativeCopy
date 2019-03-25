@@ -7,6 +7,7 @@ import { TaskItem, TaskData } from './TaskItem';
 type Props =
 {
   tasks: TaskData[],
+  complete?: boolean,
 };
 
 export default class TaskList extends Component<Props>
@@ -26,7 +27,7 @@ export default class TaskList extends Component<Props>
         data={ this.props.tasks }
         renderItem={ ( task ) =>
         {
-          return <TaskItem task={ task.item }></TaskItem>;
+          return <TaskItem task={ task.item } complete={ !!this.props.complete }></TaskItem>;
         } }
         keyExtractor={ ( item, index ) => { return item.id.toString(); } }
         ListEmptyComponent={ this.renderEmpty() }

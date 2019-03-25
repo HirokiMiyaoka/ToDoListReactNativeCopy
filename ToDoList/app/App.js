@@ -28,7 +28,7 @@ export default class App extends Component {
     renderPage(page) {
         switch (page) {
             case 'edit': return (React.createElement(Edit, { edit: this.state.edit || 0 }));
-            default: return (React.createElement(Top, { tasks: this.state.tasks }));
+            default: return (React.createElement(Top, { tasks: this.state.tasks, complete: this.state.complete }));
         }
     }
     render() {

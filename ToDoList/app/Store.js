@@ -9,11 +9,13 @@ export default class Store {
             page: '',
             edit: 0,
             tasks: [],
+            complete: [],
         };
         // Debug:
         state.tasks.push({ id: 1, title: 'test1' });
         state.tasks.push({ id: 2, title: 'test2' });
         state.tasks.push({ id: 3, title: 'test3' });
+        state.complete.push({ id: 4, title: 'task4' });
         return state;
     }
     static setState(state) {

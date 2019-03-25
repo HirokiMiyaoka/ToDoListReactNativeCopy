@@ -44,6 +44,16 @@ export default class Edit extends Component {
         list[index] = subtask;
         this.setState({ subtasks: list });
     }
+    render() {
+        return (React.createElement(View, { style: styles.container },
+            this.renderHeader(),
+            this.renderMainTask(),
+            React.createElement(View, { style: styles.subtasks },
+                React.createElement(View, { style: styles.subtaskicon },
+                    React.createElement(Text, null, "\u21B3")),
+                this.renderSubtasks(this.state.subtasks || []),
+                this.renderAddSubtask())));
+    }
     renderHeader() {
         return (React.createElement(View, { style: styles.header },
             React.createElement(TouchableOpacity, { style: [styles.headeritem, styles.back], onPress: () => { this.execBack(); } },
@@ -72,16 +82,6 @@ export default class Edit extends Component {
                 }
                 return this.renderSubtask(task.item, task.index);
             }, keyExtractor: (item, index) => { return index.toString(); }, ListEmptyComponent: () => { return (React.createElement(View, { style: { height: 0 } })); } }));
-    }
-    render() {
-        return (React.createElement(View, { style: styles.container },
-            this.renderHeader(),
-            this.renderMainTask(),
-            React.createElement(View, { style: styles.subtasks },
-                React.createElement(View, { style: styles.subtaskicon },
-                    React.createElement(Text, null, "\u21B3")),
-                this.renderSubtasks(this.state.subtasks || []),
-                this.renderAddSubtask())));
     }
 }
 const styles = StyleSheet.create({
