@@ -8,7 +8,7 @@ export default class Edit extends Component {
     constructor(props) {
         super(props);
         const task = Store.getTask(this.props.edit);
-        this.state = Object.assign({ edit: this.props.edit !== 0 }, task);
+        this.state = Object.assign({ edit: this.props.edit !== 0, editsubtask: -1 }, task);
     }
     nowTask() {
         const task = {
@@ -34,10 +34,15 @@ export default class Edit extends Component {
     execAddSubtask() {
         const list = this.state.subtasks ? this.state.subtasks.concat([]) : [];
         list.push('test');
-        this.setState({ subtasks: list });
+        this.setState({ subtasks: list, editsubtask: list.length - 1 });
     }
     updateTitle(text) {
         this.setState({ title: text });
+    }
+    updateSubtask(index, subtask) {
+        const list = this.state.subtasks ? this.state.subtasks.concat([]) : [];
+        list[index] = subtask;
+        this.setState({ subtasks: list });
     }
     renderHeader() {
         return (React.createElement(View, { style: styles.header },
@@ -56,13 +61,16 @@ export default class Edit extends Component {
         return (React.createElement(TouchableOpacity, { onPress: () => { this.execAddSubtask(); } },
             React.createElement(Text, null, "\u30B5\u30D6\u30BF\u30B9\u30AF\u3092\u8FFD\u52A0")));
     }
-    renderSubtask(task) {
-        return (React.createElement(View, null,
+    renderSubtask(task, index) {
+        return (React.createElement(TouchableOpacity, { onPress: () => { this.setState({ editsubtask: index }); } },
             React.createElement(Text, null, task)));
     }
     renderSubtasks(tasks) {
         return (React.createElement(FlatList, { style: styles.subtaskscontents, data: tasks, renderItem: (task) => {
-                return this.renderSubtask(task.item);
+                if (task.index === this.state.editsubtask) {
+                    return (React.createElement(TextInput, { autoFocus: true, defaultValue: task.item, onChangeText: (text) => { this.updateSubtask(task.index, text); }, onBlur: () => { this.setState({ editsubtask: -1 }); } }));
+                }
+                return this.renderSubtask(task.item, task.index);
             }, keyExtractor: (item, index) => { return index.toString(); }, ListEmptyComponent: () => { return (React.createElement(View, { style: { height: 0 } })); } }));
     }
     render() {

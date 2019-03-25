@@ -14,6 +14,7 @@ type Props =
 type State = TaskData &
 {
   edit: boolean,
+  editsubtask: number,
 };
 
 export default class Edit extends Component<Props,State>
@@ -22,7 +23,7 @@ export default class Edit extends Component<Props,State>
   {
     super( props );
     const task = Store.getTask( this.props.edit );
-    this.state = Object.assign( { edit: this.props.edit !== 0 }, task );
+    this.state = Object.assign( { edit: this.props.edit !== 0, editsubtask: -1 }, task );
   }
 
   private nowTask(): TaskData
@@ -61,12 +62,19 @@ export default class Edit extends Component<Props,State>
   {
     const list = this.state.subtasks ? this.state.subtasks.concat( [] ) : [];
     list.push( 'test' );
-    this.setState( { subtasks: list } )
+    this.setState( { subtasks: list, editsubtask: list.length - 1 } );
   }
 
   private updateTitle( text: string )
   {
     this.setState( { title: text } );
+  }
+
+  private updateSubtask( index: number, subtask: string )
+  {
+    const list = this.state.subtasks ? this.state.subtasks.concat( [] ) : [];
+    list[ index ] = subtask;
+    this.setState( { subtasks: list } );
   }
 
   public renderHeader()
@@ -96,12 +104,12 @@ export default class Edit extends Component<Props,State>
     );
   }
 
-  public renderSubtask( task: string )
+  public renderSubtask( task: string, index: number )
   {
     return (
-      <View>
+      <TouchableOpacity onPress={ () => { this.setState( { editsubtask: index } ); } }>
         <Text>{ task }</Text>
-      </View>
+      </TouchableOpacity>
     );
   }
 
@@ -113,7 +121,11 @@ export default class Edit extends Component<Props,State>
         data={ tasks }
         renderItem={ ( task ) =>
         {
-          return this.renderSubtask( task.item );
+          if ( task.index === this.state.editsubtask )
+          {
+            return (<TextInput autoFocus={ true } defaultValue={ task.item } onChangeText={ ( text ) => { this.updateSubtask( task.index, text ); } } onBlur={ () => { this.setState( { editsubtask: -1 } ); } }></TextInput>);
+          }
+          return this.renderSubtask( task.item, task.index );
         } }
         keyExtractor={ ( item, index ) => { return index.toString(); } }
         ListEmptyComponent={ () => { return ( <View style={ { height: 0 } }></View> ); } }
