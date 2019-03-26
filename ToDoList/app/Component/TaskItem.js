@@ -39,6 +39,11 @@ export class TaskItem extends Component {
         }
     }
     execEdit() { Store.gotoPage('edit', { edit: this.props.task.id }); }
+    render() {
+        return (React.createElement(View, { style: [styles.container, styles.taskview] },
+            this.renderTaskContent(this.props.task.title, this.state.del),
+            this.renderSubtasks(this.props.task.subtasks)));
+    }
     renderTaskContent(name, del, index) {
         return (React.createElement(View, { style: styles.taskline },
             React.createElement(TouchableOpacity, { onPress: () => { this.execDelete(index); }, style: styles.checkbutton },
@@ -47,18 +52,13 @@ export class TaskItem extends Component {
                 React.createElement(Text, { style: styles.text }, name))));
     }
     renderSubtask(subtask, index) {
-        return (React.createElement(View, { style: [styles.subtask, styles.taskview], key: index.toString() }, this.renderTaskContent(subtask, 0 <= this.state.dels.indexOf(index), index)));
+        return (React.createElement(View, { style: [styles.subtask, styles.subtaskview], key: index.toString() }, this.renderTaskContent(subtask, 0 <= this.state.dels.indexOf(index), index)));
     }
     renderSubtasks(tasks) {
         if (!tasks) {
             return React.createElement(View, null);
         }
         return (React.createElement(View, { style: styles.subtasks }, tasks.map((task, index) => { return this.renderSubtask(task, index); })));
-    }
-    render() {
-        return (React.createElement(View, { style: [styles.container, styles.taskview] },
-            this.renderTaskContent(this.props.task.title, this.state.del),
-            this.renderSubtasks(this.props.task.subtasks)));
     }
 }
 TaskItem.DELETE_TIME = 1000;
@@ -90,5 +90,9 @@ const styles = StyleSheet.create({
     taskview: {
         borderBottomWidth: 1,
         borderBottomColor: 'gray',
+    },
+    subtaskview: {
+        borderTopWidth: 1,
+        borderTopColor: 'gray',
     },
 });

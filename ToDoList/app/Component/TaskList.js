@@ -10,7 +10,7 @@ export default class TaskList extends Component {
     }
     render() {
         return (React.createElement(FlatList, { style: styles.container, data: this.props.tasks, renderItem: (task) => {
-                return React.createElement(TaskItem, { task: task.item });
+                return React.createElement(TaskItem, { task: task.item, complete: !!this.props.complete });
             }, keyExtractor: (item, index) => { return item.id.toString(); }, ListEmptyComponent: this.renderEmpty() }));
     }
 }

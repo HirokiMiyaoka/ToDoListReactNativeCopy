@@ -36,11 +36,11 @@ export default class Top extends Component {
         }
         return (React.createElement(View, null,
             React.createElement(TouchableOpacity, { style: styles.completeheader, onPress: () => { this.setState({ open: !this.state.open }); } },
-                React.createElement(Text, null,
+                React.createElement(Text, { style: styles.completetitle },
                     "\u5B8C\u4E86\u3057\u305F\u30BF\u30B9\u30AF(",
                     list.length,
                     "\u4EF6)")),
-            this.state.open ? React.createElement(TaskList, { tasks: list }) : React.createElement(View, null)));
+            this.state.open ? React.createElement(TaskList, { tasks: list, complete: true }) : React.createElement(View, { style: styles.completeheaderbottom })));
     }
 }
 const styles = StyleSheet.create({
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     },
     list: {
         flex: 1,
+        padding: 10,
     },
     header: {
         height: 60,
@@ -108,7 +109,20 @@ const styles = StyleSheet.create({
         right: 0,
     },
     completeheader: {
+        marginTop: 10,
+        padding: 5,
         left: 0,
         right: 0,
+        borderTopWidth: 1,
+        borderTopColor: 'gray',
+    },
+    completetitle: {
+        fontSize: 20,
+    },
+    completeheaderbottom: {
+        left: 0,
+        right: 0,
+        borderBottomWidth: 1,
+        borderBottomColor: 'gray',
     },
 });

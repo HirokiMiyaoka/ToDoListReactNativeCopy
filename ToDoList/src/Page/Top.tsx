@@ -70,8 +70,10 @@ export default class Top extends Component<Props,State>
     if ( list.length <= 0 ) { return (<View></View>); }
     return (
       <View>
-        <TouchableOpacity style={ styles.completeheader } onPress={ () => { this.setState( { open: !this.state.open } ); } }><Text>完了したタスク({ list.length }件)</Text></TouchableOpacity>
-        { this.state.open ? <TaskList tasks={ list } complete={ true }></TaskList> : <View></View> }
+        <TouchableOpacity style={ styles.completeheader } onPress={ () => { this.setState( { open: !this.state.open } ); } }>
+          <Text style={ styles.completetitle }>完了したタスク({ list.length }件)</Text>
+        </TouchableOpacity>
+        { this.state.open ? <TaskList tasks={ list } complete={ true }></TaskList> : <View style={ styles.completeheaderbottom }></View> }
       </View>
     );
   }
@@ -89,6 +91,7 @@ const styles = StyleSheet.create(
   list:
   {
     flex: 1,
+    padding: 10,
   },
   header:
   {
@@ -153,7 +156,22 @@ const styles = StyleSheet.create(
   },
   completeheader:
   {
+    marginTop: 10,
+    padding: 5,
     left: 0,
     right: 0,
+    borderTopWidth: 1,
+    borderTopColor: 'gray',
+  },
+  completetitle:
+  {
+    fontSize: 20,
+  },
+  completeheaderbottom:
+  {
+    left: 0,
+    right: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
   },
 } );

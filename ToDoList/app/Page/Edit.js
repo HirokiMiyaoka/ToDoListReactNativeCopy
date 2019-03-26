@@ -7,8 +7,8 @@ import Store from '../Store';
 export default class Edit extends Component {
     constructor(props) {
         super(props);
-        const task = Store.getTask(this.props.edit);
-        this.state = Object.assign({ edit: this.props.edit !== 0, editsubtask: -1 }, task);
+        const data = Store.getTask(this.props.edit);
+        this.state = Object.assign({ edit: this.props.edit !== 0, editsubtask: -1, complete: data.complete }, data.task);
     }
     nowTask() {
         const task = {
@@ -19,7 +19,7 @@ export default class Edit extends Component {
         return task;
     }
     checkUpdate() {
-        return this.state.edit;
+        return !this.state.complete && this.state.edit;
     }
     execBack() {
         (this.checkUpdate() ? Store.updateTask(this.nowTask()) : Promise.resolve()).then(() => {

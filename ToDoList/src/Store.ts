@@ -65,11 +65,27 @@ export default class Store
     return -1;
   }
 
+  public static searchTaskComplete( id: number ): number
+  {
+    const tasks = this.gs().complete;
+
+    for ( let i = 0 ; i < tasks.length ; ++i )
+    {
+      if ( tasks[ i ].id === id ) { return i; }
+    }
+
+    return -1;
+  }
+
   public static getTask( id: number )
   {
-    const index = this.searchTask( id );
+    let index = this.searchTask( id );
 
-    if ( 0 <= index ) { return this.gs().tasks[ index ]; }
+    if ( 0 <= index ){ return { complete: false, task: this.gs().tasks[ index ] }; }
+
+    index = this.searchTaskComplete( id );
+
+    if ( 0 <= index ){ return { complete: true, task: this.gs().complete[ index ] }; }
 
     const etask: TaskData =
     {
@@ -77,7 +93,7 @@ export default class Store
       title: '',
     };
 
-    return etask;
+    return { complete: false, task: etask };
   }
 
   public static updateTask( data: TaskData )

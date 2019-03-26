@@ -15,6 +15,7 @@ type State = TaskData &
 {
   edit: boolean,
   editsubtask: number,
+  complete: boolean,
 };
 
 export default class Edit extends Component<Props,State>
@@ -22,8 +23,8 @@ export default class Edit extends Component<Props,State>
   constructor( props: any )
   {
     super( props );
-    const task = Store.getTask( this.props.edit );
-    this.state = Object.assign( { edit: this.props.edit !== 0, editsubtask: -1 }, task );
+    const data = Store.getTask( this.props.edit );
+    this.state = Object.assign( { edit: this.props.edit !== 0, editsubtask: -1, complete: data.complete }, data.task );
   }
 
   private nowTask(): TaskData
@@ -39,7 +40,7 @@ export default class Edit extends Component<Props,State>
 
   private checkUpdate()
   {
-    return this.state.edit;
+    return !this.state.complete && this.state.edit;
   }
 
   private execBack()

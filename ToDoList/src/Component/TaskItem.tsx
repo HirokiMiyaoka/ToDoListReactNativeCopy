@@ -68,6 +68,16 @@ export class TaskItem extends Component<Props, State>
 
   private execEdit() { Store.gotoPage( 'edit', { edit: this.props.task.id } ); }
 
+  render()
+  {
+    return (
+      <View style={ [ styles.container, styles.taskview ] }>
+	  	  { this.renderTaskContent( this.props.task.title, this.state.del ) }
+        { this.renderSubtasks( this.props.task.subtasks ) }
+      </View>
+    );
+  }
+
   private renderTaskContent( name: string, del: boolean, index?: number )
   {
     return (
@@ -84,7 +94,7 @@ export class TaskItem extends Component<Props, State>
 
   private renderSubtask( subtask: string, index: number )
   {
-    return ( <View style={ [ styles.subtask, styles.taskview ] } key={ index.toString() }>
+    return ( <View style={ [ styles.subtask, styles.subtaskview ] } key={ index.toString() }>
       { this.renderTaskContent( subtask, 0 <= this.state.dels.indexOf( index ), index ) }
     </View> );
   }
@@ -95,16 +105,6 @@ export class TaskItem extends Component<Props, State>
     return (
       <View style={ styles.subtasks }>
         { tasks.map( ( task, index ) => { return this.renderSubtask( task, index ); } ) }
-      </View>
-    );
-  }
-
-  render()
-  {
-    return (
-      <View style={ [ styles.container, styles.taskview ] }>
-	  	  { this.renderTaskContent( this.props.task.title, this.state.del ) }
-        { this.renderSubtasks( this.props.task.subtasks ) }
       </View>
     );
   }
@@ -147,5 +147,10 @@ const styles = StyleSheet.create(
   {
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
+  },
+  subtaskview:
+  {
+    borderTopWidth: 1,
+    borderTopColor: 'gray',
   },
 } );
