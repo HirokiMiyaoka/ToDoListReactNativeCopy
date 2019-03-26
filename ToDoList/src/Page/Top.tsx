@@ -51,11 +51,7 @@ export default class Top extends Component<Props,State>
         </View>
         <View style={ styles.footer }>
         </View>
-        <View style={ styles.createarea }>
-          <TouchableOpacity onPress={ () => { this.execNewTask(); } } style={ styles.createbutton } >
-            <Text style={ styles.buttontext }>+新しいタスクを追加</Text>
-          </TouchableOpacity>
-        </View>
+        { this.renderNewTask() }
         <TouchableOpacity onPress={ () => { this.execCancelNewTask() } } style={ [ styles.black, this.state.create ? { top: 0 } : { height: 0 } ] }>
           <View style={ styles.newtask }>
             <Text>new task</Text>
@@ -74,6 +70,17 @@ export default class Top extends Component<Props,State>
           <Text style={ styles.completetitle }>完了したタスク({ list.length }件)</Text>
         </TouchableOpacity>
         { this.state.open ? <TaskList tasks={ list } complete={ true }></TaskList> : <View style={ styles.completeheaderbottom }></View> }
+      </View>
+    );
+  }
+
+  private renderNewTask()
+  {
+    return (
+      <View style={ styles.createarea }>
+        <TouchableOpacity onPress={ () => { this.execNewTask(); } } style={ styles.createbutton } >
+          <Text style={ styles.buttontext }>+新しいタスクを追加</Text>
+        </TouchableOpacity>
       </View>
     );
   }

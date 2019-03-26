@@ -23,9 +23,7 @@ export default class Top extends Component {
                     React.createElement(TaskList, { tasks: this.props.tasks })),
                 this.renderComplete(this.props.complete)),
             React.createElement(View, { style: styles.footer }),
-            React.createElement(View, { style: styles.createarea },
-                React.createElement(TouchableOpacity, { onPress: () => { this.execNewTask(); }, style: styles.createbutton },
-                    React.createElement(Text, { style: styles.buttontext }, "+\u65B0\u3057\u3044\u30BF\u30B9\u30AF\u3092\u8FFD\u52A0"))),
+            this.renderNewTask(),
             React.createElement(TouchableOpacity, { onPress: () => { this.execCancelNewTask(); }, style: [styles.black, this.state.create ? { top: 0 } : { height: 0 }] },
                 React.createElement(View, { style: styles.newtask },
                     React.createElement(Text, null, "new task")))));
@@ -41,6 +39,11 @@ export default class Top extends Component {
                     list.length,
                     "\u4EF6)")),
             this.state.open ? React.createElement(TaskList, { tasks: list, complete: true }) : React.createElement(View, { style: styles.completeheaderbottom })));
+    }
+    renderNewTask() {
+        return (React.createElement(View, { style: styles.createarea },
+            React.createElement(TouchableOpacity, { onPress: () => { this.execNewTask(); }, style: styles.createbutton },
+                React.createElement(Text, { style: styles.buttontext }, "+\u65B0\u3057\u3044\u30BF\u30B9\u30AF\u3092\u8FFD\u52A0"))));
     }
 }
 const styles = StyleSheet.create({

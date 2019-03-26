@@ -12,7 +12,7 @@ export default class Store {
             complete: [],
         };
         // Debug:
-        state.tasks.push({ id: 1, title: 'test1' });
+        state.tasks.push({ id: 1, title: 'test1', subtasks: ['test1-1', 'test1-2'] });
         state.tasks.push({ id: 2, title: 'test2' });
         state.tasks.push({ id: 3, title: 'test3' });
         state.complete.push({ id: 4, title: 'task4' });
@@ -70,6 +70,11 @@ export default class Store {
                     data.id = task.id + 1;
                 }
             });
+            this.gs().complete.forEach((task) => {
+                if (data.id <= task.id) {
+                    data.id = task.id + 1;
+                }
+            });
             if (data.id <= 0) {
                 data.id = 1;
             }
@@ -85,14 +90,28 @@ export default class Store {
         }
         return this.setState({ tasks: tasks });
     }
-    static removeTask(id) {
-        const index = this.searchTask(id);
-        if (index < 0) {
-            return Promise.reject(new Error('No task.'));
+    static removeTask(id, complete) {
+        if (complete) {
+            const index = this.searchTaskComplete(id);
+            if (index < 0) {
+                return Promise.reject(new Error('No task.'));
+            }
+            const list = this.gs().complete.concat();
+            list.splice(index, 1);
+            return this.setState({ complete: list });
         }
-        const tasks = this.gs().tasks;
-        tasks.splice(index, 1);
-        return this.setState({ tasks: tasks });
+        else {
+            const index = this.searchTask(id);
+            if (index < 0) {
+                return Promise.reject(new Error('No task.'));
+            }
+            const tasks = this.gs().tasks.concat();
+            const task = tasks[index];
+            tasks.splice(index, 1);
+            const list = this.gs().complete.concat();
+            list.push(task);
+            return this.setState({ tasks: tasks, complete: list });
+        }
     }
     static removeSubTask(id, sindex) {
         const index = this.searchTask(id);

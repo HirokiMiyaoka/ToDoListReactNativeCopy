@@ -47,9 +47,9 @@ export class TaskItem extends Component {
     renderTaskContent(name, del, index) {
         return (React.createElement(View, { style: styles.taskline },
             React.createElement(TouchableOpacity, { onPress: () => { this.execDelete(index); }, style: styles.checkbutton },
-                React.createElement(Text, { style: styles.checktext }, del ? '✔' : '○')),
+                React.createElement(Text, { style: styles.checktext }, del || this.props.complete ? '✔' : '○')),
             React.createElement(TouchableOpacity, { onPress: () => { this.execEdit(); } },
-                React.createElement(Text, { style: styles.text }, name))));
+                React.createElement(Text, { style: [styles.text, this.props.complete ? styles.completetext : {}] }, name))));
     }
     renderSubtask(subtask, index) {
         return (React.createElement(View, { style: [styles.subtask, styles.subtaskview], key: index.toString() }, this.renderTaskContent(subtask, 0 <= this.state.dels.indexOf(index), index)));
@@ -75,7 +75,11 @@ const styles = StyleSheet.create({
     subtasks: {
         paddingLeft: 30,
     },
-    subtask: {},
+    subtask: {
+        marginTop: 5,
+        marginBottom: 5,
+        paddingTop: 5,
+    },
     taskline: {
         paddingLeft: 30,
     },
@@ -94,5 +98,8 @@ const styles = StyleSheet.create({
     subtaskview: {
         borderTopWidth: 1,
         borderTopColor: 'gray',
+    },
+    completetext: {
+        textDecorationLine: 'line-through',
     },
 });

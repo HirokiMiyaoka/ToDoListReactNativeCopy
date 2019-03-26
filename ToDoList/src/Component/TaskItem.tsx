@@ -83,10 +83,10 @@ export class TaskItem extends Component<Props, State>
     return (
       <View style={ styles.taskline }>
         <TouchableOpacity onPress={ () => { this.execDelete( index ) } } style={ styles.checkbutton }>
-          <Text style={ styles.checktext }>{ del ? '✔' : '○' }</Text>
+          <Text style={ styles.checktext }>{ del || this.props.complete ? '✔' : '○' }</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={ () => { this.execEdit() } }>
-          <Text style={ styles.text }>{ name }</Text>
+          <Text style={ [ styles.text, this.props.complete ? styles.completetext : {} ] }>{ name }</Text>
         </TouchableOpacity>
       </View>
     );
@@ -128,7 +128,11 @@ const styles = StyleSheet.create(
   {
     paddingLeft: 30,
   },
-  subtask: {},
+  subtask: {
+    marginTop: 5,
+    marginBottom: 5,
+    paddingTop: 5,
+  },
   taskline:
   {
     paddingLeft: 30,
@@ -152,5 +156,9 @@ const styles = StyleSheet.create(
   {
     borderTopWidth: 1,
     borderTopColor: 'gray',
+  },
+  completetext:
+  {
+    textDecorationLine: 'line-through',
   },
 } );

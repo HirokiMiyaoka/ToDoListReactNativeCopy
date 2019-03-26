@@ -27,7 +27,7 @@ export default class Edit extends Component {
         });
     }
     execDelete() {
-        Store.removeTask(this.state.id).then(() => {
+        Store.removeTask(this.state.id, this.state.complete).then(() => {
             Store.gotoPage();
         });
     }
@@ -65,7 +65,7 @@ export default class Edit extends Component {
         return (React.createElement(View, { style: styles.contents },
             React.createElement(TouchableOpacity, null,
                 React.createElement(Text, null, "\u30DE\u30A4\u30BF\u30B9\u30AF")),
-            React.createElement(TextInput, { style: styles.input, placeholder: "Input text.", defaultValue: this.state.title, onChangeText: (text) => { this.updateTitle(text); } })));
+            React.createElement(TextInput, { style: [styles.input, this.state.complete ? styles.completetext : {}], placeholder: "Input text.", defaultValue: this.state.title, onChangeText: (text) => { this.updateTitle(text); } })));
     }
     renderAddSubtask() {
         return (React.createElement(TouchableOpacity, { onPress: () => { this.execAddSubtask(); } },
@@ -73,7 +73,7 @@ export default class Edit extends Component {
     }
     renderSubtask(task, index) {
         return (React.createElement(TouchableOpacity, { onPress: () => { this.setState({ editsubtask: index }); } },
-            React.createElement(Text, null, task)));
+            React.createElement(Text, { style: [this.state.complete ? styles.completetext : {}] }, task)));
     }
     renderSubtasks(tasks) {
         return (React.createElement(FlatList, { style: styles.subtaskscontents, data: tasks, renderItem: (task) => {
@@ -132,5 +132,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 10,
+    },
+    completetext: {
+        textDecorationLine: 'line-through',
     },
 });

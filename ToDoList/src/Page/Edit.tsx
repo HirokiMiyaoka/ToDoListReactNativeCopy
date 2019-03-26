@@ -53,7 +53,7 @@ export default class Edit extends Component<Props,State>
 
   private execDelete()
   {
-    Store.removeTask( this.state.id ).then( () =>
+    Store.removeTask( this.state.id, this.state.complete ).then( () =>
     {
       Store.gotoPage();
     } );
@@ -108,7 +108,7 @@ export default class Edit extends Component<Props,State>
     return (
       <View style={ styles.contents }>
         <TouchableOpacity><Text>マイタスク</Text></TouchableOpacity>
-        <TextInput style={ styles.input } placeholder="Input text." defaultValue={ this.state.title } onChangeText={ ( text ) => { this.updateTitle( text ); } } />
+        <TextInput style={ [ styles.input, this.state.complete ? styles.completetext : {} ] } placeholder="Input text." defaultValue={ this.state.title } onChangeText={ ( text ) => { this.updateTitle( text ); } } />
       </View>
     );
   }
@@ -124,7 +124,7 @@ export default class Edit extends Component<Props,State>
   {
     return (
       <TouchableOpacity onPress={ () => { this.setState( { editsubtask: index } ); } }>
-        <Text>{ task }</Text>
+        <Text style={ [ this.state.complete ? styles.completetext : {} ] }>{ task }</Text>
       </TouchableOpacity>
     );
   }
@@ -210,5 +210,9 @@ const styles = StyleSheet.create(
     position: 'absolute',
     top: 0,
     left: 10,
+  },
+  completetext:
+  {
+    textDecorationLine: 'line-through',
   },
 } );
