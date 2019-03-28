@@ -1,7 +1,7 @@
 import React from 'react'
 import { Component } from 'react';
 // Components
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import TaskList from '../Component/TaskList';
 import { TaskData } from '../Component/TaskItem';
 // Store
@@ -17,6 +17,8 @@ type State =
 {
   create: boolean,
   open: boolean,
+
+  newtasktitle: string,
 }
 
 export default class Top extends Component<Props,State>
@@ -24,7 +26,7 @@ export default class Top extends Component<Props,State>
   constructor( props: any )
   {
     super( props );
-    this.state = { create: false, open: false };
+    this.state = { create: false, open: false, newtasktitle: '' };
   }
 
   private execNewTask()
@@ -36,6 +38,16 @@ export default class Top extends Component<Props,State>
   private execCancelNewTask()
   {
     this.setState( { create: false } );
+  }
+
+  private execCreateTask()
+  {
+    const title = this.state.newtasktitle;
+
+    Store.updateTask( { id: 0, title: title, subtasks: [] } ).then( ( id ) =>
+    {
+      Store.gotoPage( 'edit', { edit: id } );
+    } );
   }
 
   render()
@@ -52,11 +64,7 @@ export default class Top extends Component<Props,State>
         <View style={ styles.footer }>
         </View>
         { this.renderNewTask() }
-        <TouchableOpacity onPress={ () => { this.execCancelNewTask() } } style={ [ styles.black, this.state.create ? { top: 0 } : { height: 0 } ] }>
-          <View style={ styles.newtask }>
-            <Text>new task</Text>
-          </View>
-        </TouchableOpacity>
+        { this.renderNewTaskPopup() }
       </View>
     );
   }
@@ -82,6 +90,18 @@ export default class Top extends Component<Props,State>
           <Text style={ styles.buttontext }>+新しいタスクを追加</Text>
         </TouchableOpacity>
       </View>
+    );
+  }
+
+  private renderNewTaskPopup()
+  {
+    return (
+      <TouchableOpacity onPress={ () => { this.execCancelNewTask() } } style={ [ styles.black, this.state.create ? { top: 0 } : { height: 0 } ] }>
+        <TouchableOpacity style={ styles.newtask } onPress={ () => {} }>
+          <TextInput placeholder="新しいタスク" onChangeText={ ( text ) => { this.setState( { newtasktitle: text } ); } }></TextInput>
+          <TouchableOpacity onPress={ () => { this.execCreateTask() } }><Text>保存</Text></TouchableOpacity>
+        </TouchableOpacity>
+      </TouchableOpacity>
     );
   }
 }

@@ -1,12 +1,14 @@
 import React from 'react';
 import { Component } from 'react';
 // Components
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import TaskList from '../Component/TaskList';
+// Store
+import Store from '../Store';
 export default class Top extends Component {
     constructor(props) {
         super(props);
-        this.state = { create: false, open: false };
+        this.state = { create: false, open: false, newtasktitle: '' };
     }
     execNewTask() {
         //Store.gotoPage( 'edit', { edit: 0 } );
@@ -14,6 +16,12 @@ export default class Top extends Component {
     }
     execCancelNewTask() {
         this.setState({ create: false });
+    }
+    execCreateTask() {
+        const title = this.state.newtasktitle;
+        Store.updateTask({ id: 0, title: title, subtasks: [] }).then((id) => {
+            Store.gotoPage('edit', { edit: id });
+        });
     }
     render() {
         return (React.createElement(View, { style: styles.container },
@@ -24,9 +32,7 @@ export default class Top extends Component {
                 this.renderComplete(this.props.complete)),
             React.createElement(View, { style: styles.footer }),
             this.renderNewTask(),
-            React.createElement(TouchableOpacity, { onPress: () => { this.execCancelNewTask(); }, style: [styles.black, this.state.create ? { top: 0 } : { height: 0 }] },
-                React.createElement(View, { style: styles.newtask },
-                    React.createElement(Text, null, "new task")))));
+            this.renderNewTaskPopup()));
     }
     renderComplete(list) {
         if (list.length <= 0) {
@@ -44,6 +50,13 @@ export default class Top extends Component {
         return (React.createElement(View, { style: styles.createarea },
             React.createElement(TouchableOpacity, { onPress: () => { this.execNewTask(); }, style: styles.createbutton },
                 React.createElement(Text, { style: styles.buttontext }, "+\u65B0\u3057\u3044\u30BF\u30B9\u30AF\u3092\u8FFD\u52A0"))));
+    }
+    renderNewTaskPopup() {
+        return (React.createElement(TouchableOpacity, { onPress: () => { this.execCancelNewTask(); }, style: [styles.black, this.state.create ? { top: 0 } : { height: 0 }] },
+            React.createElement(TouchableOpacity, { style: styles.newtask, onPress: () => { } },
+                React.createElement(TextInput, { placeholder: "\u65B0\u3057\u3044\u30BF\u30B9\u30AF", onChangeText: (text) => { this.setState({ newtasktitle: text }); } }),
+                React.createElement(TouchableOpacity, { onPress: () => { this.execCreateTask(); } },
+                    React.createElement(Text, null, "\u4FDD\u5B58")))));
     }
 }
 const styles = StyleSheet.create({

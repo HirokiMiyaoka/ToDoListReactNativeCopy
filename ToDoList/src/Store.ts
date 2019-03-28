@@ -120,7 +120,7 @@ export default class Store
       if ( index < 0 ) { return Promise.reject( new Error( 'No task.' ) ); }
       tasks[ index ] = data;
     }
-    return this.setState( { tasks: tasks } );
+    return this.setState( { tasks: tasks } ).then( () => { return data.id; } );
   }
 
   public static removeTask( id: number, complete: boolean )

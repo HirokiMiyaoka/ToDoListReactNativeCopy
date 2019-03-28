@@ -88,7 +88,7 @@ export default class Store {
             }
             tasks[index] = data;
         }
-        return this.setState({ tasks: tasks });
+        return this.setState({ tasks: tasks }).then(() => { return data.id; });
     }
     static removeTask(id, complete) {
         if (complete) {
