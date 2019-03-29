@@ -19,7 +19,7 @@ export class TaskItem extends Component {
             this.setState({ del: true });
             setTimeout(() => {
                 this.setState({ del: false });
-                Store.removeTask(this.props.task.id);
+                Store.removeTask(this.props.task.id, false);
             }, TaskItem.DELETE_TIME);
         }
         else {

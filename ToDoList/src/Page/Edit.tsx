@@ -45,7 +45,7 @@ export default class Edit extends Component<Props,State>
 
   private execBack()
   {
-    ( this.checkUpdate() ? Store.updateTask( this.nowTask() ) : Promise.resolve() ).then( () =>
+    ( this.checkUpdate() ? Store.updateTask( this.nowTask() ) : Promise.resolve( 0 ) ).then( () =>
     {
       Store.gotoPage();
     } );
@@ -124,6 +124,7 @@ export default class Edit extends Component<Props,State>
   {
     return (
       <TouchableOpacity onPress={ () => { this.setState( { editsubtask: index } ); } }>
+        <View style={ styles.subtaskmark }><Text>○</Text></View>
         <Text style={ [ this.state.complete ? styles.completetext : {} ] }>{ task }</Text>
       </TouchableOpacity>
     );
@@ -210,6 +211,12 @@ const styles = StyleSheet.create(
     position: 'absolute',
     top: 0,
     left: 10,
+  },
+  subtaskmark:
+  {
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
   completetext:
   {

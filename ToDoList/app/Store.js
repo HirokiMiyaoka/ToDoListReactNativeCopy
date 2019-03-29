@@ -101,15 +101,23 @@ export default class Store {
             return this.setState({ complete: list });
         }
         else {
+            const tasks = this.gs().tasks.concat();
+            const list = this.gs().complete.concat();
             const index = this.searchTask(id);
             if (index < 0) {
-                return Promise.reject(new Error('No task.'));
+                const index = this.searchTaskComplete(id);
+                if (index < 0) {
+                    return Promise.reject(new Error('No task.'));
+                }
+                const task = list[index];
+                list.splice(index, 1);
+                tasks.push(task);
             }
-            const tasks = this.gs().tasks.concat();
-            const task = tasks[index];
-            tasks.splice(index, 1);
-            const list = this.gs().complete.concat();
-            list.push(task);
+            else {
+                const task = tasks[index];
+                tasks.splice(index, 1);
+                list.push(task);
+            }
             return this.setState({ tasks: tasks, complete: list });
         }
     }

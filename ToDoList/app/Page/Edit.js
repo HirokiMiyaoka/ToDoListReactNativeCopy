@@ -22,7 +22,7 @@ export default class Edit extends Component {
         return !this.state.complete && this.state.edit;
     }
     execBack() {
-        (this.checkUpdate() ? Store.updateTask(this.nowTask()) : Promise.resolve()).then(() => {
+        (this.checkUpdate() ? Store.updateTask(this.nowTask()) : Promise.resolve(0)).then(() => {
             Store.gotoPage();
         });
     }
@@ -73,6 +73,8 @@ export default class Edit extends Component {
     }
     renderSubtask(task, index) {
         return (React.createElement(TouchableOpacity, { onPress: () => { this.setState({ editsubtask: index }); } },
+            React.createElement(View, { style: styles.subtaskmark },
+                React.createElement(Text, null, "\u25CB")),
             React.createElement(Text, { style: [this.state.complete ? styles.completetext : {}] }, task)));
     }
     renderSubtasks(tasks) {
@@ -132,6 +134,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 10,
+    },
+    subtaskmark: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
     },
     completetext: {
         textDecorationLine: 'line-through',
